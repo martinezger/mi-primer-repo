@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from mi_app.views import saludar_a, saludo, calcular_imc
+from mi_app.views import saludar_a, saludo, calcular_imc, elegir_nombre_aleatorio
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hola/', saludo),
     path('saludar/persona/<nombre>', saludar_a),
-    path('indice-masa-corporal/', calcular_imc)
+    path('indice-masa-corporal/', calcular_imc),
+    path('elegir-ganador/', elegir_nombre_aleatorio)
 ]
