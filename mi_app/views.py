@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from datetime import date, datetime
-from mi_app.models import Curso
+from mi_app.models import Curso, Estudiante
 
 
 def saludo(request):
@@ -14,18 +14,20 @@ def saludar_a(request, nombre):
 
 
 def saludo_personalizado(request):
+    pass
+
+def mostrar_index(request):
+    return render(request, "mi_app/index.html", {"mi_titulo": "Hola este es mi primer website!!!"})
+
+def listar_cursos(request): # vista
     context = {}
-
-    if request.GET:
-        context["nombre"] = request.GET["nombre"]
-
-    return render(request, "mi_app/index.html", context)
+    context["cursosssssss"] = Curso.objects.all() # modelo
+    return render(request, "mi_app/lista_cursos.html", context) # template
 
 
-def listar_cursos(request):
+def listar_estudiantes(request):
     context = {}
-    context["cursos"] = Curso.objects.all()
-    return render(request, "mi_app/lista_cursos.html", context)
-
+    context["estudiantes"] = Estudiante.objects.all()
+    return render(request, "mi_app/lista_estudiantes.html", context)
 
 
