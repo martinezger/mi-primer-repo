@@ -20,7 +20,7 @@ from manejador_contenido.views import mostrar_home, mostrar_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('mi_app.urls')),
     path('home/', mostrar_home ),
-    path('profile/', mostrar_profile )
+    path('profile/', mostrar_profile),
+    path('', include('mi_app.urls')),
 ]

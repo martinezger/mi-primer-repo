@@ -59,9 +59,11 @@ def formulario_busqueda(request):
     busqueda_formulario = CursoBusquedaFormulario()
 
 
-    if request.GET:      
-        cursos = Curso.objects.filter(nombre=busqueda_formulario["criterio"]).all()
-        return render(request, "mi_app/curso_busqueda.html", {"busqueda_formulario": busqueda_formulario, "cursos": cursos})
+    if request.GET:    
+        busqueda_formulario = CursoBusquedaFormulario(request.GET)
+        if busqueda_formulario.is_valid():
+            cursos = Curso.objects.filter(nombre=busqueda_formulario.cleaned_data.get("criterio")).all()
+            return render(request, "mi_app/curso_busqueda.html", {"busqueda_formulario": busqueda_formulario, "cursos": cursos})
     
     
     return render(request, "mi_app/curso_busqueda.html", {"busqueda_formulario": busqueda_formulario})
