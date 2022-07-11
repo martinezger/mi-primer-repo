@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from datetime import date, datetime
 from mi_app.models import Curso, Estudiante
@@ -33,7 +33,7 @@ def listar_estudiantes(request):
 
 
 
-def formulario_curso(request):
+def formulario_curso(request): # Create
 
     if request.method == "POST":
         
@@ -54,7 +54,7 @@ def formulario_curso(request):
 
 
 
-def formulario_busqueda(request):
+def formulario_busqueda(request): # Read
 
     busqueda_formulario = CursoBusquedaFormulario()
 
@@ -67,8 +67,36 @@ def formulario_busqueda(request):
     
     
     return render(request, "mi_app/curso_busqueda.html", {"busqueda_formulario": busqueda_formulario})
-        
 
+
+
+def actualizar_curso(request, pk): # Update
+
+    if request.method == 'GET':     
+        curso = get_object_or_404(Curso, pk=pk)
+        initial =  {"curso": curso.nombre, "camada": curso.camada}
+        formulario = CursoFormulario(initial=initial)
+        return render(request, "mi_app/actualizar_curso.html", {"formulario": formulario})
+    
+    elif request.POST:    
+        formulario = CursoFormulario(request.POST)
+        if formulario.is_valid():
+            curso = get_object_or_404(Curso, pk=pk)
+            curso.nombre=formulario.cleaned_data.get("curso") 
+            curso.camada = formulario.cleaned_data.get("camada")
+            curso.save()
+            return render(request, "mi_app/exito.html")
+    
+
+def confirmar_borrar_curso(request, pk): # Delete
+    curso = get_object_or_404(Curso, pk=pk)
+    return render(request, "mi_app/confirmar_borrar.html", {"curso": curso})
+    
+
+def borrar_curso(request, pk): # Delete
+    curso = get_object_or_404(Curso, pk=pk)
+    curso.delete()
+    return render(request, "mi_app/exito.html")
 
 
 
